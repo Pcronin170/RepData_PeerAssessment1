@@ -20,7 +20,7 @@ activity = read.csv("activity.csv")
 
 ####1. Calculate the total number of steps taken per day
 
-```{r}
+```{r StepsPerDay}
 activity.StepsPerDay = aggregate(activity$steps,
                                  by=list(activity$date),FUN = sum)
 names(activity.StepsPerDay) = c("date","avg_steps")
@@ -28,7 +28,7 @@ activity.StepsPerDay
 ```
 
 ####2. Make a histogram of the total number of steps taken each day
-```{r,fig.width=12}
+```{r StepsPerDay_Histogram,fig.width=12}
 hist(activity.StepsPerDay$avg_steps,
      main = "Histogram of Total Steps per day",
      xlab = "Steps",
@@ -70,7 +70,7 @@ ggplot(avgStepInterval, aes(interval, avg_steps)) +
 
 ####2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+```{r 5_Minute_Interval_Max}
 x = max(avgStepInterval$avg_steps)
 interval = avgStepInterval[avgStepInterval$avg_steps == x,c("interval")]
 avg_steps = format(avgStepInterval[avgStepInterval$avg_steps==x,c("avg_steps")])
@@ -83,7 +83,7 @@ of `r avg_steps` steps.
 ## Imputing missing values
 
 ####1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
-```{r}
+```{r Missing_Values}
 na.rows = format(nrow(activity[is.na(activity$steps),]))
 ```
 
@@ -93,7 +93,7 @@ The number of missing values is `r na.rows`
 
 My strategy is to remove all dates where no data was recorded at all, and replace the NA values with the median of that interval across all days.  I considered the mean of the day; however, the intervals appear much more correlated than the average across the entire day.  This is likey because people stick to simlar walking and sleeping patterns during the day
 
-```{r}
+```{r Impute_Missing}
 
 #Remove dates with no data from activity
 avgStep = aggregate(activity$steps,by = list(activity$date),FUN = mean,na.rm = TRUE)
@@ -112,7 +112,7 @@ summary(activity.impute)
 
 ####3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-```{r}
+```{r Imputed_Dataset}
 #Upate activity.impute with steps_final to fill in min for missing data
 library(data.table)
 activity.final = data.table(activity.impute)
@@ -122,7 +122,7 @@ summary(activity.impute)
 
 ####4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r,fig.width=12}
+```{r Histogram_Imputed,fig.width=12}
 #Prep data for histogram
 activity.final.StepsPerDay = aggregate(activity.final$steps_final,by = list(activity.final$date),FUN = sum)
 names(activity.final.StepsPerDay) = c("date","avg_steps")
@@ -145,7 +145,7 @@ it did not change anything.
 
 ####1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-```{r}
+```{r Convert_Date}
 #Convert date to data type
 activity.final[,date := as.Date(date,"%Y-%m-%d")]
 activity.final[,dayOfWeek := weekdays(activity.final$date)]
@@ -156,7 +156,7 @@ str(activity.final)
 
 ####2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
 
-```{r,fig.width=12}
+```{r Weekend_WeekDay_Line_Chart,fig.width=12}
 #Get average steps by interval and Weekend vs Weekday
 activity.plot = with(activity.final,aggregate(steps_final,by =list(weekDay,interval),FUN = mean))
 names(activity.plot) = c("weekDay","interval","steps_final")

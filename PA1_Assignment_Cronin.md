@@ -96,7 +96,7 @@ hist(activity.StepsPerDay$avg_steps,
      breaks = 20)
 ```
 
-![](PA1_Assignment_Cronin_files/figure-html/unnamed-chunk-2-1.png) 
+![](PA1_Assignment_Cronin_files/figure-html/StepsPerDay_Histogram-1.png) 
 
 ####3. Calculate and report the mean and median of the total number of steps taken per day
 
@@ -236,7 +236,7 @@ hist(activity.final.StepsPerDay$avg_steps,
      breaks = 20)
 ```
 
-![](PA1_Assignment_Cronin_files/figure-html/unnamed-chunk-7-1.png) 
+![](PA1_Assignment_Cronin_files/figure-html/Histogram_Imputed-1.png) 
 
 ```r
 steps.final.mean = format(na.omit(mean(activity.final.StepsPerDay$avg_steps,na.rm = TRUE)))
@@ -293,7 +293,7 @@ ggplot(activity.plot,aes(interval,steps_final,color=weekDay)) +
     scale_x_discrete(breaks=NULL)
 ```
 
-![](PA1_Assignment_Cronin_files/figure-html/unnamed-chunk-9-1.png) 
+![](PA1_Assignment_Cronin_files/figure-html/Weekend_WeekDay_Line_Chart-1.png) 
 
 
 
